@@ -13,10 +13,10 @@ judge: compare codebreaker to code, give feedback to player, determine winner
 
 q3: what data does each object keep track?
 a:
-game: @player, @board, @ma  x_turns
+game: @player, @board, @max_turns
 board: @state, @history = {guess: [r,g,b,y], pegs: [b,w]}
 player: @id, @role, @code, @guess
-judge: 
+judge: -
 
 q4: how should the objects talk to each other?
 a:
@@ -29,7 +29,7 @@ q5: what is the step by step flow of the game?
 a:
 begin
 game start
-create players + board
+game create players + board
 player codemaker sets secret code
 game loop max 12 turns
 board display history
