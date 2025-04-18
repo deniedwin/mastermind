@@ -13,18 +13,21 @@ class Game
     max_turns.times do
       board.draw_board
       guess = code_breaker.make_guess
-      feedback = judge.check_code(guess, code)
-      board.record_turn(guess, feedback)
-      puts '------------'
-      if judge.win?(feedback)
-        board.announce_winner(code_breaker)
-        won = true
-        break
+
+      if judge.valid_move?(guess)
+        feedback = judge.check_code(guess, code)
+        board.record_turn(guess, feedback)
+        puts '------------'
+        if judge.win?(feedback)
+          board.announce_winner(code_breaker)
+          won = true
+          break
+        end
       end
     end
     board.announce_loss unless won
-  end
 
+  end
 end
 
 # class in charge of player id
@@ -63,8 +66,8 @@ class Judge
     feedback[:black] == 4
   end
 
-  def valid_move?(move)
-    move == 3
+  def valid_move?(guess)
+    guess.include?('r' && 'g' && 'b' && 'w')
   end
 end
 
