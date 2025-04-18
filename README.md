@@ -34,7 +34,19 @@ player codemaker sets secret code
 game loop max 12 turns
 board display history
 player codebreaker makes guess
-judge compares guess and secret code
+judge compares guess and secret code:
+1. Loop over guess[i]:
+   if guess[i] == code[i]
+     → black_pegs += 1
+     → mark i as used in used_code and used_guess
+2. Loop over guess[i]:
+   if i is in used_guess → skip
+   then loop over code[j]:
+     if j is in used_code → skip
+     if guess[i] == code[j]
+       → white_pegs += 1
+       → mark j as used in used_code
+       → break
 judge feedback pegs
 board record turn + pegs
 judge win? if yes -> announce winner

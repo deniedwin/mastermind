@@ -16,6 +16,7 @@ class Game
       feedback = judge.check_code(guess, code)
       board.record_turn(guess, feedback)
       puts '---------------------'
+
       if judge.win?(feedback)
         board.announce_winner(guess)
         won = true
@@ -67,18 +68,40 @@ end
 # class that checks if the guess is equal to secret code
 class Judge
   def check_code(guess, code)
-    if guess == code
-      {black: 4, white: 0}
-    else
-      black_counter = 0
-      white_counter = 0
-      {black: 0, white: 0} # FIX THIS, ADD INDEX AND VALUE TO CHECK COLOR POSITION
+    black_pegs = 0
+    white_pegs = 0
+    used_guess_indices = []
+    used_code_indices = []
+
+    # check for black pegs
+    guess.each_with_index do |color, i|
+      if color == code[i]
+        black_pegs += 1
+        used_code_indices.push(i)
+        used_guess_indices.push(i)
+      end
     end
+
+    # check for white pegs
+    guess.each_with_index do |color_guess, i|
+      if !used_guess_indices.include?(i)
+        code.each_with_index do |color_code, j|
+          if !used_code_indices.include?(j) && color_guess == color_code
+            white_pegs += 1
+            used_code_indices.push(j)
+            break
+          end
+        end
+      end
+    end
+
+    {black: black_pegs, white: white_pegs}
   end
 
   def win?(feedback)
     feedback[:black] == 4
   end
+
 end
 
 # class that draws the board, record turns and announce win/loss
