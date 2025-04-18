@@ -13,20 +13,16 @@ class Game
     max_turns.times do
       board.draw_board
       guess = code_breaker.make_guess
-
-      if judge.valid_move?(guess)
-        feedback = judge.check_code(guess, code)
-        board.record_turn(guess, feedback)
-        puts '------------'
-        if judge.win?(feedback)
-          board.announce_winner(code_breaker)
-          won = true
-          break
-        end
+      feedback = judge.check_code(guess, code)
+      board.record_turn(guess, feedback)
+      puts '---------------------'
+      if judge.win?(feedback)
+        board.announce_winner(guess)
+        won = true
+        break
       end
     end
     board.announce_loss unless won
-
   end
 end
 
@@ -41,15 +37,31 @@ end
 # class player that makes the secret code
 class CodeMaker < Player
   def make_code
-    ['r', 'g', 'b', 'y']
+    ['y', 'g', 'r', 'b']
   end
 end
 
 # class player that guesses the secret code
 class CodeBreaker < Player
+  VALID_COLORS = ['r', 'g', 'b', 'y']
+
   def make_guess
-    ['r', 'g', 'b', 'w']
+    puts 'enter your guess (4 colors: r g b y), seperated by space'
+    loop do
+      input = gets.chomp.split
+      if valid_guess?(input)
+        return input
+        break
+      else
+        puts 'invalid guess'
+      end
+    end
   end
+
+  def valid_guess?(guess)
+    guess.size == 4 && guess.all? {|color| VALID_COLORS.include?(color)}
+  end
+
 end
 
 # class that checks if the guess is equal to secret code
@@ -64,10 +76,6 @@ class Judge
 
   def win?(feedback)
     feedback[:black] == 4
-  end
-
-  def valid_move?(guess)
-    guess.include?('r' && 'g' && 'b' && 'w')
   end
 end
 
@@ -86,8 +94,8 @@ class Board
     puts 'player turn recorded'
   end
 
-  def announce_winner(code_breaker)
-    puts "winner = #{code_breaker}"
+  def announce_winner(guess)
+    puts "winner guess = #{guess}"
   end
 
   def announce_loss
