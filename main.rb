@@ -52,7 +52,6 @@ class CodeBreaker < Player
       input = gets.chomp.split
       if valid_guess?(input)
         return input
-        break
       else
         puts 'invalid guess'
       end
