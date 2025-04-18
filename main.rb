@@ -15,6 +15,7 @@ class Game
       guess = code_breaker.make_guess
       feedback = judge.check_code(guess, code)
       board.record_turn(guess, feedback)
+      puts '------------'
       if judge.win?(feedback)
         board.announce_winner(code_breaker)
         won = true
@@ -44,18 +45,26 @@ end
 # class player that guesses the secret code
 class CodeBreaker < Player
   def make_guess
-    ['r', 'g', 'b', 'y']
+    ['r', 'g', 'b', 'w']
   end
 end
 
 # class that checks if the guess is equal to secret code
 class Judge
   def check_code(guess, code)
-    {black: 2, white: 1}
+    if guess == code
+      {black: 4, white: 0}
+    else
+      {black: 0, white: 0}
+    end
   end
 
   def win?(feedback)
     feedback[:black] == 4
+  end
+
+  def valid_move?(move)
+    move == 3
   end
 end
 
@@ -66,7 +75,7 @@ class Board
   end
 
   def draw_board
-    puts 'draw board'
+    puts "board = #{@history}"
   end
 
   def record_turn(guess, feedback)
@@ -75,7 +84,7 @@ class Board
   end
 
   def announce_winner(code_breaker)
-    puts 'winner winner!'
+    puts "winner = #{code_breaker}"
   end
 
   def announce_loss
