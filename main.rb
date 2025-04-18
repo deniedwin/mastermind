@@ -70,7 +70,9 @@ class Judge
     if guess == code
       {black: 4, white: 0}
     else
-      {black: 0, white: 0}
+      black_counter = 0
+      white_counter = 0
+      {black: 0, white: 0} # FIX THIS, ADD INDEX AND VALUE TO CHECK COLOR POSITION
     end
   end
 
