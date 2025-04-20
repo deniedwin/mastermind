@@ -1,14 +1,16 @@
 # frozen_string_literal: true
-# 
+
 # class in charge of player id
 class Player
-  VALID_COLORS = ['r', 'g', 'b', 'y']
+  VALID_COLORS = %w[r g b y].freeze
   attr_reader :id
+
   def initialize(id)
     @id = id
   end
+
   def valid_input?(code)
-    code.size == 4 && code.all? {|color| VALID_COLORS.include?(color)}
+    code.size == 4 && code.all? { |color| VALID_COLORS.include?(color) }
   end
 end
 
@@ -19,11 +21,9 @@ class CodeMaker < Player
     puts 'enter code maker secret code (4 colors: r g b y), seperated by space'
     loop do
       code = gets.chomp.split
-      if valid_input?(code)
-        return code
-      else
-        puts 'invalid code'
-      end
+      return code if valid_input?(code)
+
+      puts 'invalid code'
     end
   end
 end
@@ -34,11 +34,9 @@ class CodeBreaker < Player
     puts 'enter code breaker guess (4 colors: r g b y), seperated by space'
     loop do
       input = gets.chomp.split
-      if valid_input?(input)
-        return input
-      else
-        puts 'invalid guess'
-      end
+      return input if valid_input?(input)
+
+      puts 'invalid guess'
     end
   end
 end

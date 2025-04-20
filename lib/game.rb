@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# 
+
 # class in charge of the flow of the app
 class Game
   def start_game
@@ -25,12 +25,11 @@ class Game
       guess = @code_breaker.make_guess
       feedback = @judge.check_code(guess, @code)
       @board.record_turn(guess, feedback)
-      puts '_________'
-      if @judge.win?(feedback)
-        @board.announce_winner(guess)
-        @won = true
-        break
-      end
+      next unless @judge.win?(feedback)
+
+      @board.announce_winner(guess)
+      @won = true
+      break
     end
   end
 

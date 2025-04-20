@@ -1,21 +1,21 @@
 # frozen_string_literal: true
-# 
+
 # class that draws the board, record turns and announce win/loss
 class Board
-  def initialize()
+  def initialize
     @history = []
   end
 
   def draw_board
-    puts "Board:"
+    puts 'Board:'
     @history.each_with_index do |turn, index|
-      puts "Turn #{index + 1}: Guess: #{turn[:guess].join(' ')}, Feedback: B:#{turn[:feedback][:black]} W:#{turn[:feedback][:white]}"
+      puts "Turn #{index + 1}: Guess: #{turn[:guess].join(' ')}"
+      puts "Feedback: B:#{turn[:feedback][:black]} W:#{turn[:feedback][:white]}"
     end
   end
-  
 
   def record_turn(guess, feedback)
-    @history.push({guess: guess, feedback: feedback})
+    @history.push({ guess: guess, feedback: feedback })
   end
 
   def announce_winner(guess)
